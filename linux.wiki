@@ -32,3 +32,4 @@ free -h 查看内存
         - chmod appadmin file      
         - chmod appadmin:appadmin file   (第一个为用户，第二个为组)
         - chmod -R appadmin directory (修改目录的拥有者)
+        - new test

@@ -10,7 +10,7 @@
 =  笔记 =
     - [[mina框架详解]]
     - [[linux]] 笔记
-    - [[python]] 笔记
+    - [[python]] 笔记new
     
 = 日常 =
     - [[servers]] username and passwords produce 

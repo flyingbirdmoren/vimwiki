@@ -1,0 +1,19 @@
+= 809继续 =
+- [X] 跑通基础流程
+- [X] 完善一下日志系统
+- [X] 增加测试模块
+- [ ] 完成对数据库的各种操作 
+
+
+
+
+
+= temp =
+simNo, sendTime , longitude,latitude, velocity,direction, status, mileage , gas,recordVelocity, updateDate, alarmState , altitude ,valid
+{{{sql
+    #添加索引
+    CREATE UNIQUE INDEX gpsrealdata_plateNo_uindex ON jt_809_server.gpsrealdata (plateNo);
+    ALTER TABLE jt_809_server.gpsrealdata ALTER COLUMN vehicleId SET DEFAULT 0;
+    
+    insert into gpsrealdata(simNo,sendTime,longitude,latitude,velocity,direction,status,mileage,gas,recordVelocity,updateDate,alarmState,altitude,valid,plateNo) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) on DUPLICATE KEY UPDATE simNo=?,sendTime=?,longitude=?,latitude=?,velocity=?,direction=?,status=?,mileage=?,gas=?,recordVelocity=?,updateDate=?,alarmState=?,altitude=?,valid=?
+}}}

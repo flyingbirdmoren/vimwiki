@@ -1,0 +1,15 @@
+查看一下权限管理那儿是否好了
+运力计划上报 2个 1990(好气网) 1997(专业版)
+1822
+
+== 提货单(专业版-与接单版-)(1988,1996) ==
+目前的url都为haoqiwang/heavy/heavytakegoods.html
+预期专业版可能为haoqiwang/professionalHeavy/heavytakegoods.html
+
+- 运单详情
+haoqiwang/gwaybillDetail.html?waybillId=51359                   :3:
+
+- [ ] vimwiki 标签：TODO: DONE: STARTED: FIXED: FIXME: 
+- [ ] hello,world                                                   :2: 
+- [ ] world 
+     

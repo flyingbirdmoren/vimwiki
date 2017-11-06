@@ -1,0 +1,14 @@
+= 修改bug =
+- 驾驶员添加证件
+- G17080700006
+- 
+= 数据库809new =
+- 10.39.7.66
+- 3306
+- appadmin
+- 1qazXSw@
+
+= 缺失的表 =
+- onlinerecord 
+- systemconfig 
+- vehicle

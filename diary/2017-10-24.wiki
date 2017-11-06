@@ -1,0 +1,36 @@
+
+= 继续了解一下vimscript =
+- 循环执行，字符串连接
+- 16进制表示（加减）
+- 动态性
+- TODO: 右对齐
+- css设计 VimwikiRemoveHeaderLevel RemoveHeaderLevel()                                                              :10:
+
+-----------------------------------------------------------------------
+
+= DONE: 下拉框 上级可见下级 =
+
+= 809New =
+- receive数据之后，将handler去掉
+{{{java
+    public static PlatformInfo getPlatformInfo(int platformId) {
+		try {
+			String hql = "from PlatformInfo where platformId = ? and deleted = false";
+			IBaseDao baseDao = ServiceLauncher.getBaseDao();
+			PlatformInfo p = (PlatformInfo) baseDao.find(hql,platformId);
+			return p;
+		} catch (Exception e) {
+			logger.error("error:", e);
+		}
+		return null;
+
+	}
+}}}
+检测一下是在19行还是20行死掉的.
+Exception -> Throwable
+
+
+
+
+
+

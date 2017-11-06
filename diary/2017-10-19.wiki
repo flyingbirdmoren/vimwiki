@@ -1,0 +1,72 @@
+= 优化运力上报加载速度 = 
+== 初始化的时候，用同步加载驾驶员等信息，并等待完成之后才加载main,表现的很慢 ==
+- 原始代码
+{{{javascript
+var tractorData = getAjaxData(api_host + "truck/findLicensePlates?type=TRACTOR&queryValue=");
+var semitrailerData = getAjaxData(api_host + "truck/findLicensePlates?type=SEMITRAILER&queryValue=");
+var personData = getAjaxData(api_host + "persons/waybillOfNamePhone?posts=DRIVER&queryValue=");
+var truckRelationData = getAjaxData(api_host + "truck/findTruckRelations");
+}}}
+- 定义为用到时再初始化数据
+{{{javascript
+var ServerData = {
+    getTractorData : function () {
+        var me = this;
+        if (me.tractorData) {
+            return me.tractorData;
+        } else {
+            var tractorData = getAjaxData(api_host + "truck/findLicensePlates?type=TRACTOR&queryValue=");
+            me.tractorData = tractorData;
+            return me.tractorData;
+        }
+    },
+    getSemitrailerData : function () {
+        var me = this;
+        if (me.semitrailerData) {
+            return me.semitrailerData;
+        } else {
+            var semitrailerData = getAjaxData(api_host + "truck/findLicensePlates?type=SEMITRAILER&queryValue=");
+            me.semitrailerData = semitrailerData;
+            return me.semitrailerData;
+        }
+    },
+    getPersonData : function () {
+        var me = this;
+        if (me.personData) {
+            return me.personData;
+        } else {
+            var personData = getAjaxData(api_host + "persons/waybillOfNamePhone?posts=DRIVER&queryValue=");
+            me.personData = personData;
+            return me.personData;
+        }
+    },
+    getTruckRelationData : function () {
+        var me = this;
+        if (me.truckRelationData) {
+            return me.truckRelationData;
+        } else {
+            var truckRelationData = getAjaxData(api_host + "truck/findTruckRelations");
+            me.truckRelationData = truckRelationData;
+            return me.truckRelationData;
+        }
+    },
+    setupPopup: function () {
+        var html = $("#truck_popup_window").html();
+        if (html) {
+            return true;
+        } else {
+            createReportTrucks();
+        }
+    }
+}
+}}}
+- 调用时机
+{{{javascript
+function initTruckPopupData() {
+    //....
+    var tractorData = ServerData.getTractorData();
+    var truckRelationData = ServerData.getTruckRelationData();
+    ServerData.setupPopup();
+    //....
+}
+}}}

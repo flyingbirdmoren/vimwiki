@@ -1,0 +1,63 @@
+%toc 合版-刘振宁部分
+
+== version ==
+| api    | mask   | tms    |
+|--------|--------|--------|
+| 1.0.37 | 1.0.45 | 1.0.40 |
+
+== 事项 ==
+* [X] 运单管理: time--13
+    - [X] 派车,增加线路,特殊处理"新奥能源物流有限公司",第三方公司线路显示全部线路 time-1
+
+=== 派车线路： ===
+    * 添加“指定线路”、“标准重车里程（km）”；
+        - 1、新奥能源物流有限公司：
+             运单_派车_指定线路：保留现有功能逻辑；
+        - 2、第三方承运商（非新奥能源物流有限公司）：
+             运单_派车_指定线路：指定线路中关联出所有第三方承运商维护的线路；
+    * 规则请见合版说明中第九条，“标准重车里程（km）”取线路中的运营里程；
+    * 关联页面有“当前运单”页面、“待派车”页面、“待装车”页面、“待卸车”页面、“待对账”页面、“支付结算”页面、“变更中”页面、“历史运单”页面、“查看运单”页面、“发起对账”页面、“对账复核”页面、“收款确认”页面；
+    * 加入“添加异常”功能，与“专业接单版”“添加异常”功能逻辑展示形式一致，若运单已“添加异常”，则运单编号前面显示叹号；
+    * TODO: DONE: STARTED: FIXED: FIXME: 
+    
+* [X] 地标: time--3
+    - [X] 同步数据
+    - [X] 线路规划创建查询 -
+    - [X] 派车线路规划
+    - [X] 权限控制
+    - [X] 场站类型坐标,新增时添加"标准卸车时间"选项.(详情页 列表页 列设置)
+=== 数据库 ===
+{{{sql
+    ALTER TABLE landmark ADD standard_unload_time BIGINT NULL;
+    /**
+    #修改权限
+    UPDATE privilege SET url = '/landmarks/findLandmarksExceptUpstream' WHERE id = 1833;
+    INSERT INTO privilege(id,name,description,url,pid,pinfo,type,req_type,menu_link) VALUES (2014,'删除气源地场站','删除气源地场站','/landmarks/loadOrUnloadLandmark', 1833,',0,1816,1833,','LINK','DELETE','menuUrl');
+    INSERT INTO privilege(id,name,description,url,pid,pinfo,type,req_type,menu_link) VALUES (2015,'查询所有地标','查询所有地标','/landmarks/', 1833,',0,1816,1833,','LINK','GET','menuUrl');
+    #修改角色权限关系
+    INSERT INTO role_privilege(role_id, privilege_id, enterprise_id, create_time) VALUES (1861, 2014, 671, now());
+    INSERT INTO role_privilege(role_id, privilege_id, enterprise_id, create_time) VALUES (1861, 2015, 671, now());
+    INSERT INTO role_privilege(role_id, privilege_id, enterprise_id, create_time) VALUES (1870, 2014, 671, now());
+    INSERT INTO role_privilege(role_id, privilege_id, enterprise_id, create_time) VALUES (1870, 2015, 671, now());
+    INSERT INTO role_privilege(role_id, privilege_id, enterprise_id, create_time) VALUES (1884, 2014, 671, now());
+    INSERT INTO role_privilege(role_id, privilege_id, enterprise_id, create_time) VALUES (1884, 2015, 671, now());
+    **/
+}}}
+=== 权限 ===
+{{{javascript
+    "删除_添加气源地和场站的权限" : "/landmarks/*/*/loadOrUnloadLandmark_DELETE",
+    "查询上游地标以及自建地标的权限" : "/landmarks/_GET",
+    "查询自建地标的权限" : "/landmarks/findLandmarksExceptUpstream_GET",
+}}}
+
+* [X] 提货单:   time--1
+    - [X] 电子围栏  time--0.5
+    - [X] 增加"组织机构" 筛选条件   time--0.5
+* [X] 运力交易: time--2
+    - [X] 整体  time--2
+    - [X] 修复加载卡慢
+* 权限管理，修改页面
+    
+    = temp =
+    运单号 :  G17083000010
+

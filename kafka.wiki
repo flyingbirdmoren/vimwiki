@@ -1,0 +1,47 @@
+= kafka安装 =
+- 下载kafka_2.11-0.10.1.0.tar.gz文件，并解压到对应的目录下面
+- 进入的conf目录，修改server.conf
+	- broker.id=0		每个broker 必须有一个唯一的id
+	- zookeeper.connect=10.32.6.30:9200,10.32.6.31:9200,10.32.27.17:9200	配置zookeeper集群地址
+	- listeners=PLAINTEXT://10.32.6.31:9092			配置监听的ip和端口
+	- num.partitions=3								partitions数量，这指的是单个topic的partition数量之和。若有多个broker,可能partition分布在不同的节点上，则多个broker的所有partitioin数量加起来为num.partitions 
+- 启动
+	到bin目录下面执行：./kafka-server-start.sh ../config/server.properties &
+	
+	
+= 测试： =
+
+	
+== 创建topic ==
+	bin/kafka-topics.sh --create --zookeeper 10.32.6.31:9200 --replication-factor 1 --partitions 1 --topic test
+
+== 展示topic ==
+	bin/kafka-topics.sh --list --zookeeper 10.32.6.31:9200,10.32.6.30:9200,10.32.27.17:9200
+
+== 描述topic ==
+	bin/kafka-topics.sh --describe --zookeeper 10.32.6.31:9200,10.32.6.30:9200,10.32.27.17:9200 --topic test
+
+== 生产者： ==
+	bin/kafka-console-producer.sh --broker-list 10.32.6.31:9200,10.32.6.30:9200,10.32.27.17:9200 --topic test
+== 消费者： ==
+	bin/ kafka-console-consumer.sh --zookeeper 10.32.6.31:9200,10.32.6.30:9200,10.32.27.17:9200 --topic test --from-begin
+	./kafka-console-consumer.sh --zookeeper 10.32.6.35:4180,10.32.6.36:4180,10.32.37.17:4180 --topic gpsData
+== 查看topic状态： ==
+	bin/kafka-topics.sh --describe --zookeeper 10.32.6.31:9200,10.32.6.30:9200,10.32.27.17:9200 --topic test  
+
+
+ == 查看积压Offset：http://orchome.com/35 ==
+	/kafka-consumer-groups.sh --zookeeper 10.32.6.35:4180,10.32.6.36:4180,10.32.37.17:4180 --describe --group history-production
+	/kafka-consumer-offset-checker.sh —zookeeper 10.32.6.36:4180 —topic HistoryData —group history-production
+/kafka-consumer-offset-checker.sh --zookeeper 10.39.0.123:9092,10.39.0.233:9092,10.39.0.235:9092 --topic gpsData --group history-production
+	
+= 错误报错： =
+	- xxxx:server name not found
+		解决：按照提示增加对应的host配置
+	- Bootstrap broker localhost:9092 disconnected
+		解决：关闭lisenters的安全机制（只在Kafka 0.10.0.1.版本有反馈此问题）
+	- noleaderfound 
+		解决：kafka broker数量不为奇数，导致不能正确选举leader，
+	- 当关闭命令行工具对话框之后程序被关闭
+		解决：在启动指令上增加-daemon 来增加守护线程。
+

@@ -1,0 +1,8 @@
+- 查看运单状态是否已卸车状态 UNLOAD
+    {{{SELECT * FROM `waybill` w WHERE w.`id`='85769';}}}
+
+- 查看卸车表数据，unloading_end_time（结束时间）、before_unloading_weight（毛重）、after_unloading_weight（皮重）、suttle_unloading（净重）、arrive_unloading_time（到达时间）、platform_type这些值是不是空
+select * from `truck_unloading_info` tui where tui.`waybill_id`='42686';
+----是空先查询日志记录表，然后根据创建时间，查询时间点日志，然后根据推送好气网的数据，吧这些值填上，platform_type写死WEB就行，改好后推送调度或者交易（这样的单子直接根据waybillId查询request_retry表，一般会有失败记录，然后直接把重试次数3改成0就行了）
+SELECT * FROM `waybill_operate_log` wol WHERE wol.`waybill_id`='42686';
+----不是空的那就是其他问题了，直接推送就行了

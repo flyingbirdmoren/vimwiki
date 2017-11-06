@@ -1,0 +1,10 @@
+- print('hello', 'world')  输出 hello world  用逗号分隔
+- 排序用sorted ,或者list.sort()
+= python小工具 =
+- ipython
+- pip
+- pdb  ipdb
+- pyenv
+= sys =
+- sys.argv  读取参数
+- sys.stdin 读取终端输入，用于管道连接

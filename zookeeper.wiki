@@ -1,0 +1,53 @@
+= zookeeper 安装 =
+- 下载对应的zookeeper-- - - tar.gz 安装包并复制到对应目录解压
+- 找到zoo_sample.cfg,复制一份作为配置文件
+- 修改zoo.cfg配置文件 
+
+	单机配置：	
+		tickTime=- - 			基础时间单元，zoo的时间参数都是该单元的倍数
+		dataDir=/tmp/zookeeper  对应的data存放目录
+		clientPort=- - 			对应的链接端口
+		dataLogDir=				日志文件目录
+	集群需添加配置：
+		initLimit=- 					 （timeouts ZooKeeper uses to limit the length of time the ZooKeeper servers in quorum have to connect to a leader.）
+		syncLimit=- 					 （limits how far out of date a server can be from a leader.）
+		server.- zoo- - - :- -   
+		server.- zoo- - - :- -   
+		server.- zoo- - - :- -  
+		server.A=B：C：D：其中 A 是一个数字，表示这个是第几号服务器；B 是这个服务器的 ip 地址；C 表示的是这个服务器与集群中的 Leader 服务器交换信息的端口；
+			D 表示的是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader，而这个端口就是用来执行选举时服务器相互通信的端口。
+			如果是伪集群的配置方式，由于 B 都是一样，所以不同的 Zookeeper 实例通信端口号不能一样，所以要给它们分配不同的端口号。
+			
+	在配置的data目录下面创建myid文件，存放值为上面server.n 的n值，zookeeper通过此文件来确认本机是那个server。
+- 启动：bin/zkServer.sh start
+	
+- zoo使用的日志为log- .log 默认输出到控制台
+
+- zk端口监听问题：
+	- 改端口是zk的数据同步端口，follower通过该端口从leader同步数据，所以follower是不会开启对改端口的监听的，只有当被选举为leader的时候才会开启监听，来同步数据到各个follower
+	- 集群间的心跳和选举使用此端口。
+
+常用指令：
+	- 启动ZK服务:       sh bin/zkServer.sh start
+	- 查看ZK服务状态:   sh bin/zkServer.sh status
+	- 停止ZK服务:       sh bin/zkServer.sh stop
+	- 重启ZK服务:       sh bin/zkServer.sh restart 
+	- 链接zk服务：		 sh bin/zkCli.sh -server - - - - - - - 
+	- 常用操作：zk支持简单类似shell的指令，如下：
+        - ls / 查看/目录
+        - create /zk “test” 创建/zk 目录并且赋值“test” 字符串
+        - ls- /zk  查看/zk 目录下数据并且能看到更新次数等其他数据。
+        - get /zk |set /zk 得到或者设置内容
+        - delete /zk  删除数据
+	- 其他命令
+        -  可以通过命令：echo stat|nc - - - - - - -  来查看哪个节点被选择作为follower或者leader
+        -  使用echo ruok|nc - - - - - - -  测试是否启动了该Server，若回复imok表示已经启动。
+        -  echo dump| nc - - - - - - -  ,列出未经处理的会话和临时节点。
+        -  echo kill | nc - - - - - - -  ,关掉server
+        -  echo conf | nc - - - - - - -  ,输出相关服务配置的详细信息。
+        -  echo cons | nc - - - - - - -  ,列出所有连接到服务器的客户端的完全的连接 / 会话的详细信息。
+        -  echo envi |nc - - - - - - -  ,输出关于服务环境的详细信息（区别于 conf 命令）。
+        -  echo reqs | nc - - - - - - -  ,列出未经处理的请求。
+        -  echo wchs | nc - - - - - - -  ,列出服务器 watch 的详细信息。
+        - . echo wchc | nc - - - - - - -  ,通过 session 列出服务器 watch 的详细信息，它的输出是一个与 watch 相关的会话的列表。
+        - . echo wchp | nc - - - - - - -  ,通过路径列出服务器 watch 的详细信息。它输出一个与 session 相关的路径。 

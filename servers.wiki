@@ -1,0 +1,33 @@
+= 809服务器 =
+    - 服务器IP：10.32.26.205
+    - 用户名：appadmin
+    - 密码：abcd+1234
+= tms =
+    - 服务器IP：10.32.6.39
+    - 数据库：zhwl_tms1
+    - 用户名：zhwl_writer
+    - 密码：obWKaH&$fE
+= 生产服务器 =
+    - 10.32.6.35
+    - appadmin/abcd+1234
+= 运维809（new） =
+== server ==
+    - iaas平台809server 
+    - IP:10.39.7.54
+    - User:root
+    - Password:be5mlOpH
+    - User:appadmin
+    - Password:809server
+== database ==
+=== 809new ===
+    - 10.39.7.66
+    - 3306
+    - appadmin
+    - 1qazXSw@
+=== 809old ===
+    - 10.32.26.205
+    - 3306
+    - webadmin
+    - admin+1234
+= - kafka =
+- 10.32.6.35:9092,10.32.6.36:9092,10.32.6.37:9092

@@ -1,0 +1,25 @@
+= redis 安装 =
+- 下载到对应的redis.tar.gz文件复制到安装目录
+- tar -xvf redis.tar.gz 解压文件
+- 切换到解压文件的根目录，执行make指令，编译源码。或者切换到src目录，make PREFIX=/data/redis/redis-3.2.4 install 来执行编译安装目录。
+- 配置redis.conf 文件，最小的cluster配置为：
+	* bind 172.0.0.1 					绑定ip	
+	* port 7000						绑定端口
+	* cluster-enabled yes				是否启动cluster模式
+	* cluster-config-file nodes.conf	node文件，用来存放集群的solt分配和集群配置信息
+	* cluster-node-timeout 5000		节点失效时间
+	* appendonly yes
+- 安装完毕启动redis  在src目录下面 执行./redis-server ../redis.conf &
+- 创建集群 ./redis-trib.rb create --replicas 1 10.32.27.17:9100 10.32.6.31:9100 10.32.6.30:9100
+- 如果上一步报
+	/usr/share/rubygems/rubygems/core_ext/kernel_require.rb:55:in `require': cannot load such file -- redis (LoadError)
+	from /usr/share/rubygems/rubygems/core_ext/kernel_require.rb:55:in `require'
+	from ./redis-trib.rb:25:in `<main>'
+	错误，是因为没有安装redisGem.gem，到https://rubygems.org/gems/redis  下载对应版本的gem
+	执行：gem install -l ~/Downloads/redis-3.2.1.gem  来手动安装gem
+- 重新执行第六步，如果出现长时间join阻塞，尝试telnet一下 redis'端口+10000之后的端口，此端口是开放给redis-cluster进行心跳检测的端口，如果安全策略关闭该端口，
+会导致长时间阻塞，最终失败。
+- 关于ip bind
+   redis默认绑定的是127.0.0.1 可以通过conf中的bind来开启关闭绑定，或者更改绑定的ip，如果关闭绑定，如果开启的保护模式（默认开启），则需要登陆密码才能登陆，
+   或者本机登陆，这个时候是影响创建集群的，可以选择关闭保护模式。
+   
